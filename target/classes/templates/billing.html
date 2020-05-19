@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META SECTION -->
+    <title>Billing</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- END META SECTION -->
+    <!--  BEGIN STYLE -->
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            padding: 1px;
+        }
+    </style>
+    <!--  END STYLE -->
+
+</head>
+<body>
+<br><br>
+<center><a href="/">Click Here inorder to go to Home Page</a></center>
+<hr>
+<form action="#" th:action="@{/searchproduct}" th:object="${search}">
+    Search: <input name="search" id="search">
+    </input>
+    <div th:if="${#lists.isEmpty(search)}">
+        <h2>No Search Results Found</h2>
+    </div>
+</form>
+    <div th:if="${not #lists.isEmpty(search)}">
+        <h2>Search Results</h2>
+        <form action="#" th:action="@{/addbilling}" th:object="${billing}"
+			method="post">
+        <table>
+            <thead>
+            <tr>
+                <th>Product Code</th>
+                <th>name</th>
+                <th>price</th>
+                <th>GST</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+                <td>
+					<input type="text" th:field="*{bcode}" readonly="readonly" />
+				</td>
+				<td>
+					<input type="text" th:field="*{bname}" readonly="readonly" />
+				</td>
+				<td>
+					<input type="text" th:field="*{bprice}" readonly="readonly" />
+				</td>
+				<td>
+					<input type="text" th:field="*{bgst}" readonly="readonly" />
+				</td>
+				<td>
+					<input type="text" th:field="*{bquantity}"/>
+				</td>
+				<td>
+					<button type="submit">Add</button> 
+				</td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+    <hr>
+    <div th:if="${not #lists.isEmpty(listBillings)}">
+        <h2>Billing</h2>
+    	<table border="1" cellpadding="10">
+        	<thead>
+            	<tr>
+                	<th>Product Code</th>
+	                <th>Name</th>
+    	            <th>Price</th>
+        	        <th>GST</th>
+            	    <th>Quantity</th>
+                	<th>Actions</th>
+	            </tr>
+    	    </thead>
+        	<tbody>
+            	<tr th:each="billing : ${listBillings}">
+                	<td th:text="${billing.bcode}">Product Code</td>
+	                <td th:text="${billing.bname}">Name</td>
+    	            <td th:text="${billing.bprice}">Price</td>
+        	        <td th:text="${billing.bgst}">GST</td>
+            	    <td th:text="${billing.bquantity}">GST</td>
+                	<td>
+	                	<a th:href="@{'/editbilling/' + ${billing.bcode}}">Edit</a>
+    	            	&nbsp;&nbsp;&nbsp;
+        	        	<a th:href="@{'/deletebilling/' + ${billing.bcode}}">Delete</a>
+            	    </td>
+	            </tr>
+	            <tr>
+	            	<td colspan="4"><h3>Total:</h3></td>
+	            	<td th:text="${total}">Total</td>
+	            </tr>
+    	    </tbody>
+    	</table>
+    </div> 
+    <div th:if="${#lists.isEmpty(listBillings)}">
+        <h2>No Product Added</h2>
+    </div>
+</body>
+</html>
